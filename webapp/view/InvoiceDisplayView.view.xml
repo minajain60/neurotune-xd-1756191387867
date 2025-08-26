@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:layout="sap.ui.layout"
+  xmlns:form="sap.ui.layout.form"
+  xmlns:core="sap.ui.core"
+  xmlns:richtexteditor="sap.ui.richtexteditor"
+  xmlns:viz="sap.viz.ui5"
+  controllerName="preview.app.controller.InvoiceDisplayView"
+  displayBlock="true">
+  <Page title="InvoiceDisplayView" enableScrolling="true">
+    <content>
+      <Title id="title_dmv2meaz" text="Invoice (F2) 90005190 (F2) Display: Overview of Billing Items"/>
+      <Text id="layout_ragvlsaq"/>
+    </content>
+  </Page>
+</mvc:View>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebDynpro xmlns="http://www.sap.com/wd/webdynpro">
+  <View name="InvoiceDisplayView">
+    <Title>Invoice (F2) 90005190 (F2) Display: Overview of Billing Items</Title>
+    <Layout>
+      <MatrixLayout id="MainLayout" rowCount="3" colCount="1">
+
+        <!-- Global Toolbar (mimicking application header actions) -->
+        <MatrixHeadData rowSpan="1" colSpan="1"/>
+        <ToolBar id="GlobalToolbar">
+          <ToolBarButton id="FavoritesButton" text="" tooltip="Favorites" imageSource="~icons/icon_favorite.gif" onAction="onActionFavorites"/>
+          <ToolBarButton id="HistoryButton" text="" tooltip="History" imageSource="~icons/icon_history.gif" onAction="onActionHistory"/>
+          <ToolBarSeparator/>
+          <ToolBarButton id="SettingsButton" text="" tooltip="Settings" imageSource="~icons/icon_settings.gif" onAction="onActionSettings"/>
+          <ToolBarButton id="PrintButton" text="" tooltip="Print" imageSource="~icons/icon_print.gif" onAction="onActionPrint"/>
+          <ToolBarSeparator/>
+          <ToolBarButton id="ExitButton" text="Exit" tooltip="Exit Application" imageSource="~icons/icon_exit.gif" onAction="onActionExit"/>
+        </ToolBar>
+
+        <!-- Application-Specific Toolbar -->
+        <MatrixHeadData rowSpan="1" colSpan="1"/>
+        <ToolBar id="ApplicationToolbar">
+          <ToolBarButton id="ConfirmButton" text="" tooltip="Confirm" imageSource="~icons/icon_check.gif" onAction="onActionConfirm"/>
+          <DropDownByIndex id="ActionDropdown" width="100px" selectedKey="{/InvoiceHeader/SelectedActionKey}" onAction="onActionSelectAction"/>
+          <ToolBarSeparator/>
+          <ToolBarButton id="AttachmentButton" text="" tooltip="Attachments" imageSource="~icons/icon_attachment.gif" onAction="onActionAttachments"/>
+          <ToolBarButton id="AccountingButton" text="Accounting" tooltip="View Accounting Documents" imageSource="~icons/icon_accounting.gif" onAction="onActionAccounting"/>
+          <ToolBarButton id="BillingDocumentsButton" text="Billing documents" tooltip="View Billing Documents" imageSource="~icons/icon_billing_documents.gif" onAction="onActionBillingDocuments"/>
+          <ToolBarButton id="CancelButton" text="Cancel" tooltip="Cancel Changes" imageSource="~icons/icon_cancel.gif" onAction="onActionCancel"/>
+          <ToolBarSeparator/>
+          <ToolBarButton id="UploadButton" text="" tooltip="Upload" imageSource="~icons/icon_upload.gif" onAction="onActionUpload"/>
+          <ToolBarButton id="DownloadButton" text="" tooltip="Download" imageSource="~icons/icon_download.gif" onAction="onActionDownload"/>
+          <ToolBarButton id="RefreshButton" text="" tooltip="Refresh" imageSource="~icons/icon_refresh.gif" onAction="onActionRefresh"/>
+        </ToolBar>
+
+        <!-- Form Section for Header Data -->
+        <MatrixHeadData rowSpan="1" colSpan="1"/>
+        <FormContainer id="HeaderForm" colCount="2">
+          <!-- Column 1 -->
+          <FormElement id="InvoiceTypeElement">
+            <Label text="Invoice (F2)"/>
+            <Field>
+              <DropDownByKey id="InvoiceTypeDropdown" width="120px" selectedKey="{/InvoiceHeader/InvoiceTypeKey}" enabled="false"/>
+              <InputField id="InvoiceNumberField" value="{/InvoiceHeader/InvoiceNumber}" enabled="false" width="100px"/>
+            </Field>
+          </FormElement>
+          <FormElement id="PayerElement">
+            <Label text="Payer"/>
+            <Field>
+              <InputField id="PayerField" value="{/InvoiceHeader/Payer}" enabled="false" width="100px"/>
+            </Field>
+          </FormElement>
+          <FormElement id="BillingDateElement">
+            <Label text="Billing Date"/>
+            <Field>
+              <InputField id="BillingDateField" value="{/InvoiceHeader/BillingDate}" enabled="false" width="100px"/>
+            </Field>
+          </FormElement>
+
+          <!-- Column 2 -->
+          <FormElement id="NetValueTotalElement">
+            <Label text="Net Value"/>
+            <Field>
+              <InputField id="NetValueTotalField" value="{/InvoiceHeader/NetValueTotal}" enabled="false" width="120px"/>
+              <InputField id="CurrencyUnitField" value="{/InvoiceHeader/CurrencyUnit}" enabled="false" width="50px"/>
+            </Field>
+          </FormElement>
+          <FormElement id="PayerAddressElement">
+            <Label/>
+            <Field>
+              <TextView id="PayerAddressText" text="{/InvoiceHeader/PayerAddress}" width="300px" wrapping="true"/>
+              <Button id="PayerAddressDetailsButton" text="" tooltip="Display Payer Address Details" imageSource="~icons/icon_address_details.gif" onAction="onActionPayerAddressDetails"/>
+            </Field>
+          </FormElement>
+        </FormContainer>
+
+        <!-- Table Section for Item Data -->
+        <MatrixHeadData rowSpan="1" colSpan="1"/>
+        <Table id="InvoiceItemsTable" dataSource="{/InvoiceItems}" visibleRowCount="10" width="auto">
+          <ToolBar id="TableToolbar">
+            <ToolBarButton id="DeleteItemsButton" text="" tooltip="Delete Selected Items" imageSource="~icons/icon_delete.gif" onAction="onActionDeleteItems"/>
+            <ToolBarSeparator/>
+            <ToolBarButton id="TableLayoutButton" text="" tooltip="Table Layout Settings" imageSource="~icons/icon_table_layout.gif" onAction="onActionTableLayout"/>
+            <ToolBarButton id="TablePrintButton" text="" tooltip="Print Table" imageSource="~icons/icon_print.gif" onAction="onActionTablePrint"/>
+          </ToolBar>
+          <Columns>
+            <Column id="ItemSelectColumn" width="30px">
+              <CheckBox id="HeaderCheckBox" onAction="onActionSelectAllItems"/>
+              <template>
+                <CheckBox id="ItemRowCheckBox" selected="{Selected}"/>
+              </template>
+            </Column>
+            <Column id="ItemNoColumn" width="50px">
+              <TextView text="Item"/>
+              <template>
+                <TextView text="{ItemNo}"/>
+              </template>
+            </Column>
+            <Column id="DescriptionColumn" width="200px">
+              <TextView text="Description"/>
+              <template>
+                <LinkToAction id="DescriptionLink" text="{Description}" onAction="onActionDescriptionLink" tooltip="{Description}"/>
+              </template>
+            </Column>
+            <Column id="BilledQuantityColumn" width="80px">
+              <TextView text="Billed Quantity"/>
+              <template>
+                <TextView text="{BilledQuantity}"/>
+              </template>
+            </Column>
+            <Column id="SUColumn" width="50px">
+              <TextView text="SU"/>
+              <template>
+                <LinkToAction id="SULink" text="{SU}" onAction="onActionSULink" tooltip="{SU}"/>
+              </template>
+            </Column>
+            <Column id="NetValueItemColumn" width="100px">
+              <TextView text="Net value"/>
+              <template>
+                <TextView text="{NetValueItem}"/>
+              </template>
+            </Column>
+            <Column id="MaterialColumn" width="80px">
+              <TextView text="Material"/>
+              <template>
+                <LinkToAction id="MaterialLink" text="{Material}" onAction="onActionMaterialLink" tooltip="{Material}"/>
+              </template>
+            </Column>
+            <Column id="TaxAmountColumn" width="100px">
+              <TextView text="Tax amount"/>
+              <template>
+                <TextView text="{TaxAmount}"/>
+              </template>
+            </Column>
+          </Columns>
+        </Table>
+      </MatrixLayout>
+    </Layout>
+  </View>
+
+  <Controller name="InvoiceDisplayViewController">
+    <Methods>
+      <!-- Global Toolbar Actions -->
+      <Method name="onActionFavorites"/>
+      <Method name="onActionHistory"/>
+      <Method name="onActionSettings"/>
+      <Method name="onActionPrint"/>
+      <Method name="onActionExit"/>
+
+      <!-- Application Toolbar Actions -->
+      <Method name="onActionConfirm"/>
+      <Method name="onActionSelectAction"/>
+      <Method name="onActionAttachments"/>
+      <Method name="onActionAccounting"/>
+      <Method name="onActionBillingDocuments"/>
+      <Method name="onActionCancel"/>
+      <Method name="onActionUpload"/>
+      <Method name="onActionDownload"/>
+      <Method name="onActionRefresh"/>
+
+      <!-- Form Section Actions -->
+      <Method name="onActionPayerAddressDetails"/>
+
+      <!-- Table Toolbar Actions -->
+      <Method name="onActionDeleteItems"/>
+      <Method name="onActionTableLayout"/>
+      <Method name="onActionTablePrint"/>
+
+      <!-- Table Row Actions -->
+      <Method name="onActionSelectAllItems"/>
+      <Method name="onActionDescriptionLink"/>
+      <Method name="onActionSULink"/>
+      <Method name="onActionMaterialLink"/>
+    </Methods>
+  </Controller>
+</WebDynpro>

@@ -7,7 +7,8 @@
   xmlns:richtexteditor="sap.ui.richtexteditor"
   xmlns:viz="sap.viz.ui5"
   controllerName="preview.app.controller.InvoiceDisplayView"
-  displayBlock="true">
+  displayBlock="true"
+          xmlns:commons="sap.ui.commons">
   <Page title="InvoiceDisplayView" enableScrolling="true">
     <content>
       <Title id="title_dmv2meaz" text="Invoice (F2) 90005190 (F2) Display: Overview of Billing Items"/>
